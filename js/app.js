@@ -6,7 +6,7 @@
 (() => {
     'use strict';
 
-    const STORAGE_KEY = 'glideScoreboard.v2';
+    const STORAGE_KEY = 'glideScoreboard.v3';
     const ADMIN_PIN = '1234'; // Guaranteed password
 
     const TEAM_COLORS = [
@@ -16,7 +16,8 @@
 
     const DEFAULT_TEAMS = [
         { id: 't1', name: 'Champi Company', points: 0, color: '#ff8c00', lastDelta: 0 },
-        { id: 't2', name: 'Gola Gang', points: 0, color: '#ec4899', lastDelta: 0 }
+        { id: 't2', name: 'Gola Gang', points: 0, color: '#ec4899', lastDelta: 0 },
+        { id: 't3', name: 'Ghoda Gadi Gang', points: 0, color: '#06b6d4', lastDelta: 0 }
     ];
 
     // ---------- State ----------

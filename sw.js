@@ -1,5 +1,5 @@
 // Service Worker: keeps Glide Brands Live Leaderboard working 100% offline
-const CACHE = 'glide-scoreboard-v1';
+const CACHE = 'glide-scoreboard-v3';
 const ASSETS = [
     './',
     './index.html',
