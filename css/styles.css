@@ -695,3 +695,111 @@ button { cursor: pointer; }
     .rank-badge { width: 3.3rem; height: 3rem; font-size: 2rem; }
     .team-score { font-size: 3.2rem; }
 }
+
+/* =========================================================
+   Now Playing Banner + Game Switcher
+   ========================================================= */
+.now-playing {
+    margin: 4px auto 8px;
+    max-width: 1400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 16px;
+    padding: 12px 28px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 0 18px rgba(255, 215, 0, 0.22);
+}
+
+.np-label {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.np-game {
+    font-family: var(--font-display);
+    font-size: 60px;
+    line-height: 1;
+    color: var(--gold);
+    text-shadow: 0 0 22px rgba(255, 215, 0, 0.65);
+    letter-spacing: 3px;
+    white-space: nowrap;
+}
+
+.np-count {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: #140824;
+    background: var(--gold);
+    border-radius: 999px;
+    padding: 5px 16px;
+    white-space: nowrap;
+}
+
+.game-chips {
+    max-width: 1400px;
+    margin: 0 auto 6px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+}
+
+.game-chips::-webkit-scrollbar { display: none; }
+
+.game-chips button {
+    flex: 0 0 auto;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(20, 8, 36, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.game-chips button.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #140824;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.game-chips button.done {
+    opacity: 0.38;
+    text-decoration: line-through;
+}
+
+/* Slightly slimmer team rows to make room for the banner */
+.leaderboard { gap: 0.8rem; }
+
+.team-row {
+    grid-template-columns: 4.6rem minmax(0, 1fr) auto;
+    gap: 1.1rem;
+    padding: 0.85rem 1.5rem;
+}
+
+.rank-badge { width: 4rem; height: 3.5rem; font-size: 2.3rem; }
+.team-name { font-size: clamp(1.45rem, 2.9vw, 2.2rem); }
+.team-score { font-size: clamp(3.3rem, 6vw, 5.2rem); }
+
+@media (max-width: 720px) {
+    .now-playing { flex-wrap: wrap; gap: 8px; padding: 8px 14px; }
+    .np-label { font-size: 11px; letter-spacing: 2px; }
+    .np-game { font-size: 34px; white-space: normal; text-align: center; }
+    .np-count { font-size: 12px; padding: 3px 10px; }
+}

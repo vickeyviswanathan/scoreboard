@@ -20,11 +20,25 @@
         { id: 't3', name: 'Ghoda Gadi Gang', points: 0, color: '#06b6d4', lastDelta: 0 }
     ];
 
+    const GAMES = [
+        'Awaaz Do',
+        'Local Train Special',
+        'Reth Ka Killa',
+        'Chipku Naach',
+        'Dumb Charades',
+        'Straw Daud',
+        'Taash Ki Patri',
+        'Cutting Chai Balance',
+        'Chonga Pass',
+        'Chowpatty Tank'
+    ];
+
     // ---------- State ----------
     const state = {
         sound: true,
         teams: DEFAULT_TEAMS.map(t => ({ ...t })),
-        history: []
+        history: [],
+        currentGame: 0
     };
 
     let lastScoredTeamId = null;
@@ -38,7 +52,8 @@
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify({
                 sound: state.sound,
-                teams: state.teams
+                teams: state.teams,
+                currentGame: state.currentGame
             }));
         } catch (err) {
             console.warn('Could not save state:', err);
@@ -52,6 +67,9 @@
             const data = JSON.parse(raw);
             if (!data || typeof data !== 'object') return;
             if (typeof data.sound === 'boolean') state.sound = data.sound;
+            if (Number.isInteger(data.currentGame) && data.currentGame >= 0 && data.currentGame < GAMES.length) {
+                state.currentGame = data.currentGame;
+            }
             if (Array.isArray(data.teams) && data.teams.length > 0) {
                 state.teams = data.teams
                     .filter(t => t && typeof t.name === 'string')
@@ -107,7 +125,11 @@
         podiumModal: $('#podium-modal'),
         podiumClose: $('#podium-close'),
         podiumStage: $('#podium-stage'),
-        canvas: $('#fx-canvas')
+        canvas: $('#fx-canvas'),
+
+        npGame: $('#np-game'),
+        npCount: $('#np-count'),
+        gameChips: $('#game-chips')
     };
 
     // =========================================================
@@ -597,6 +619,35 @@
     });
 
     // =========================================================
+    // Now Playing Banner + Game Switcher
+    // =========================================================
+    function renderGames() {
+        const idx = state.currentGame;
+        el.npGame.textContent = GAMES[idx].toUpperCase();
+        el.npCount.textContent = `GAME ${idx + 1} / ${GAMES.length}`;
+
+        const chips = GAMES.map((name, i) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.textContent = `${i + 1}. ${name}`;
+            b.className = i === idx ? 'active' : (i < idx ? 'done' : '');
+            b.setAttribute('aria-pressed', String(i === idx));
+            b.addEventListener('click', () => {
+                if (state.currentGame === i) return;
+                state.currentGame = i;
+                sfx.unlock();
+                save();
+                renderGames();
+            });
+            return b;
+        });
+
+        el.gameChips.replaceChildren(...chips);
+        const active = el.gameChips.querySelector('.active');
+        if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
+    }
+
+    // =========================================================
     // Init
     // =========================================================
     function init() {
@@ -604,6 +655,7 @@
         el.soundToggle.setAttribute('aria-pressed', String(state.sound));
         el.soundToggle.textContent = state.sound ? '🔊' : '🔇';
         renderAll();
+        renderGames();
 
         if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
             navigator.serviceWorker.register('sw.js').catch(() => {});
